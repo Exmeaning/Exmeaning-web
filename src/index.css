@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+@theme {
+  --font-brush: "Ma Shan Zheng", "STKaiti", "KaiTi", cursive;
+  --font-serif-cn: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --font-serif-en: "Cormorant Garamond", "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+  --font-sans: "Noto Serif SC", -apple-system, "PingFang SC", sans-serif;
+
+  --color-washi: #f5f1e8;
+  --color-washi-dark: #ebe5d5;
+  --color-ink: #1a1a2e;
+  --color-ink-soft: #2d2d44;
+  --color-ink-muted: #5a5a70;
+  --color-ink-faint: #8b8680;
+  --color-shu: #c8385a;
+  --color-shu-deep: #9b2a46;
+  --color-shu-soft: #e8829a;
+  --color-matsu: #4a6741;
+  --color-yamabuki: #d4a84b;
+  --color-sakura: #e8c5c5;
+}
+
+html,
+body {
+  background: #f5f1e8;
+  color: #1a1a2e;
+  font-family: "Noto Serif SC", -apple-system, "PingFang SC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body {
+  background-image:
+    radial-gradient(at 20% 10%, rgba(232, 197, 197, 0.25) 0px, transparent 50%),
+    radial-gradient(at 80% 70%, rgba(212, 168, 75, 0.08) 0px, transparent 50%),
+    url("/washi-texture.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #ebe5d5;
+}
+::-webkit-scrollbar-thumb {
+  background: #8b8680;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5a5a70;
+}
+
+::selection {
+  background: #c8385a;
+  color: #f5f1e8;
+}
+
+/* Vertical writing utility */
+.writing-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+/* Ink brush underline (brush stroke) */
+.brush-underline {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'><path d='M2 6 Q 50 2, 100 5 T 198 6' stroke='%23c8385a' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100% 8px;
+  padding-bottom: 6px;
+}
+
+/* Section divider — thin line with a dot */
+.divider-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #8b8680;
+}
+.divider-line::before,
+.divider-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #8b8680 50%, transparent);
+}
+
+/* Floating fade-in animation */
+@keyframes slow-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+.animate-slow-float {
+  animation: slow-float 6s ease-in-out infinite;
+}
+
+/* Ink fade in */
+@keyframes ink-fade {
+  0% { opacity: 0; filter: blur(8px); transform: scale(0.96); }
+  100% { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+.animate-ink-fade {
+  animation: ink-fade 1.2s ease-out forwards;
+}
+
+/* Subtle grain overlay */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.8'/></svg>");
+}
+
+/* Card hover lift */
+.card-lift {
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Typewriter cursor */
+.cursor-blink::after {
+  content: "▍";
+  color: #c8385a;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Red stamp (朱印) */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f5f1e8;
+  background: #c8385a;
+  font-family: "Ma Shan Zheng", serif;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px rgba(245, 241, 232, 0.2), 0 2px 8px rgba(200, 56, 90, 0.3);
+  transform: rotate(-3deg);
+}
+
+/* Custom ink cursor — hide the native pointer once it's active.
+   `any-pointer: fine` matches whenever a mouse exists, including
+   touchscreen laptops; the JS guard keeps touch-only devices untouched. */
+@media (any-pointer: fine) {
+  html.ink-cursor-active,
+  html.ink-cursor-active * {
+    cursor: none !important;
+  }
+}
