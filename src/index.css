@@ -26,11 +26,20 @@
   --font-mono: "JetBrains Mono", monospace;
 }
 
-html, body {
+html, body, #root {
   background-color: var(--color-cream);
   color: var(--color-ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  /* 关键：固定视口高度，禁止自己滚动 */
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 滚动容器：代替 body 滚动，让彩虹滚动条常驻 */
+#scroll-root {
+  height: 100%;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 

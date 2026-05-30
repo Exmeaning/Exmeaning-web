@@ -10,7 +10,7 @@ import { IconHeart, IconSparkle } from "./components/Icons";
 
 export default function App() {
   return (
-    <div className="relative bg-cream text-ink min-h-screen">
+    <div id="scroll-root" className="relative bg-cream text-ink">
       <Loader />
       <Cursor />
       <Nav />

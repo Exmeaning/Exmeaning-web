@@ -14,6 +14,7 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    const scrollRoot = document.getElementById("scroll-root");
     const onScroll = () => {
       const ids = ["about", "tech", "projects", "contact"];
       for (const id of ids) {
@@ -27,13 +28,17 @@ export function Nav() {
         }
       }
     };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    scrollRoot?.addEventListener("scroll", onScroll);
+    return () => scrollRoot?.removeEventListener("scroll", onScroll);
   }, []);
 
   const go = (id: string) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const el = document.getElementById(id);
+    const root = document.getElementById("scroll-root");
+    if (el && root) {
+      root.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+    }
   };
 
   return (
@@ -41,11 +46,11 @@ export function Nav() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl"
+      className="fixed top-4 left-4 right-[calc(1rem+12px)] z-50 max-w-5xl mx-auto"
     >
       <div className="bg-cream border-3 border-ink hard-shadow-pink px-3 md:px-5 py-2 flex items-center justify-between">
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={() => document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "smooth" })}
           className="flex items-center gap-2 group"
         >
           <span className="w-8 h-8 bg-pjsk-pink border-2 border-ink flex items-center justify-center text-white font-display text-lg group-hover:rotate-12 transition-transform">
