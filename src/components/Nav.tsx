@@ -1,59 +1,120 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Logo from "./Logo";
+import { IconArrowUpRight, IconClose, IconMenu } from "./Icons";
 
-const links = [
-  { href: "#about", label: "关于", en: "About" },
-  { href: "#philosophy", label: "理念", en: "Philosophy" },
-  { href: "#stack", label: "技术", en: "Stack" },
-  { href: "#works", label: "作品", en: "Works" },
-  { href: "#contact", label: "联系", en: "Contact" },
+const NAV = [
+  { k: "about", l: "ABOUT" },
+  { k: "tech", l: "TECH" },
+  { k: "projects", l: "PROJECTS" },
+  { k: "contact", l: "CONTACT" },
 ];
 
-export default function Nav() {
+export function Nav() {
+  const [active, setActive] = useState("about");
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const ids = ["about", "tech", "projects", "contact"];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el) {
+          const r = el.getBoundingClientRect();
+          if (r.top <= 150 && r.bottom >= 150) {
+            setActive(id);
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const go = (id: string) => {
+    setOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <motion.nav
-      initial={{ y: -20, opacity: 0 }}
+      initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.3 }}
-      className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-5 backdrop-blur-md"
-      style={{ background: "rgba(245, 241, 232, 0.7)", borderBottom: "1px solid rgba(139, 134, 128, 0.15)" }}
+      transition={{ duration: 0.6 }}
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl"
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-3 group">
-          <Logo char="雪" size={40} />
-          <div className="flex flex-col leading-none">
-            <span className="font-brush text-xl text-ink transition-colors group-hover:text-shu">東雪</span>
-            <span className="font-serif-en text-[10px] tracking-[0.2em] text-ink-faint mt-0.5">AZUMA · YUKI</span>
-          </div>
-        </a>
-        <ul className="hidden md:flex items-center gap-8 font-serif-cn text-sm">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="group relative flex flex-col items-center text-ink-soft hover:text-shu transition-colors"
-              >
-                <span>{l.label}</span>
-                <span className="font-serif-en text-[9px] tracking-[0.2em] text-ink-faint group-hover:text-shu-soft uppercase">
-                  {l.en}
-                </span>
-                <span className="absolute -bottom-2 left-0 right-0 h-[2px] bg-shu scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-              </a>
-            </li>
-          ))}
-        </ul>
-        <a
-          href="https://github.com/moe-sekai"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-2 px-4 py-2 border border-ink/20 hover:border-shu hover:text-shu transition-all font-mono text-xs tracking-wider"
+      <div className="bg-cream border-3 border-ink hard-shadow-pink px-3 md:px-5 py-2 flex items-center justify-between">
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="flex items-center gap-2 group"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.57v-2.2c-3.34.73-4.04-1.4-4.04-1.4-.55-1.4-1.33-1.76-1.33-1.76-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.3.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.64 1.66.24 2.88.12 3.18.77.84 1.24 1.9 1.24 3.22 0 4.6-2.8 5.63-5.48 5.92.42.37.8 1.1.8 2.22v3.3c0 .32.22.7.82.57A12 12 0 0024 12c0-6.63-5.37-12-12-12z" />
-          </svg>
-          moe-sekai
-        </a>
+          <span className="w-8 h-8 bg-pjsk-pink border-2 border-ink flex items-center justify-center text-white font-display text-lg group-hover:rotate-12 transition-transform">
+            東
+          </span>
+          <span className="font-display tracking-widest text-sm md:text-base hidden sm:block">
+            EXMEANING<span className="text-pjsk-pink">.</span>COM
+          </span>
+        </button>
+
+        <div className="hidden md:flex items-center gap-1">
+          {NAV.map((n) => (
+            <button
+              key={n.k}
+              onClick={() => go(n.k)}
+              className={`relative px-3 py-1.5 font-display text-sm tracking-widest transition-colors ${
+                active === n.k ? "text-white" : "text-ink hover:text-pjsk-pink"
+              }`}
+            >
+              {active === n.k && (
+                <motion.span
+                  layoutId="nav-active"
+                  className="absolute inset-0 bg-ink -z-0"
+                  transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                />
+              )}
+              <span className="relative">{n.l}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <a
+            href="https://github.com/Exmeaning"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex items-center gap-1.5 bg-pjsk-pink text-white border-2 border-ink px-3 py-1 text-xs font-mono hover:bg-pjsk-coral transition-colors"
+          >
+            GITHUB <IconArrowUpRight />
+          </a>
+          <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden w-9 h-9 bg-ink text-cream border-2 border-ink flex items-center justify-center font-display"
+          >
+            {open ? <IconClose /> : <IconMenu />}
+          </button>
+        </div>
       </div>
+
+      {/* 移动菜单 */}
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden mt-2 bg-cream border-3 border-ink hard-shadow p-2 flex flex-col"
+        >
+          {NAV.map((n) => (
+            <button
+              key={n.k}
+              onClick={() => go(n.k)}
+              className={`text-left px-4 py-3 font-display tracking-widest border-b border-dashed border-ink/20 last:border-0 ${
+                active === n.k ? "bg-ink text-cream" : ""
+              }`}
+            >
+              {n.l}
+            </button>
+          ))}
+        </motion.div>
+      )}
     </motion.nav>
   );
 }

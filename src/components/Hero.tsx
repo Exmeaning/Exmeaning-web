@@ -1,194 +1,188 @@
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { IconNote, IconStar, IconHeart, IconHeartLine, IconArrowRight } from "./Icons";
 
-export default function Hero() {
-  const [time, setTime] = useState("");
+const ROTATING = ["東雪", "浅忆清梦", "Exmeaning"];
+
+export function Hero() {
+  const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const update = () => {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, "0");
-      const m = String(now.getMinutes()).padStart(2, "0");
-      const s = String(now.getSeconds()).padStart(2, "0");
-      setTime(`${h}:${m}:${s}`);
-    };
-    update();
-    const t = setInterval(update, 1000);
+    const t = setInterval(() => setIdx((i) => (i + 1) % ROTATING.length), 2200);
     return () => clearInterval(t);
   }, []);
 
   return (
-    <section id="top" className="relative min-h-screen flex items-center px-6 md:px-12 pt-24 pb-12">
-      <div className="max-w-7xl mx-auto w-full grid md:grid-cols-12 gap-8 items-center relative z-20">
-        {/* Left: vertical brush script */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.2 }}
-          className="md:col-span-2 hidden md:flex justify-center"
-        >
-          <div className="writing-vertical flex flex-col items-center gap-6">
-            <h1 className="font-brush text-7xl text-ink leading-none tracking-widest">
-              東雪蓮華
-            </h1>
-            <div className="w-[1px] h-20 bg-ink-faint/40" />
-            <span className="font-serif-en text-[11px] tracking-[0.4em] text-ink-faint">
-              AZUMA YUKI · MMXXVI
-            </span>
-          </div>
-        </motion.div>
+    <section className="relative min-h-[100vh] pt-24 pb-16 overflow-hidden grid-bg">
+      {/* 顶部 ticker */}
+      <div className="absolute top-0 left-0 right-0 bg-pjsk-pink text-white border-b-4 border-ink overflow-hidden z-20">
+        <div className="flex whitespace-nowrap marquee-track py-2 font-display tracking-wider text-lg">
+          {Array.from({ length: 2 }).map((_, k) => (
+            <div key={k} className="flex items-center gap-8 px-4">
+              <span><IconStar /> NOW PLAYING</span>
+              <span>// MOESEKAI × MOEBOT NEXT</span>
+              <span>◆ SCU · 机械工程 · UNDERGRAD</span>
+              <span>// VIBE CODING ENTHUSIAST</span>
+              <span><IconStar /> 世界は、まだ、終わらない</span>
+              <span>// GO · NEXT.JS · ZEROBOT</span>
+              <span>◆ PJSK · GAKUMAS · BANDORI</span>
+              <span>// FULL-STACK · OTAKU · EFFICIENCY</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
-        {/* Center: main content */}
+      {/* 装饰：大圆 */}
+      <div className="absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full bg-pjsk-yellow opacity-60 blur-2xl pointer-events-none" />
+      <div className="absolute -bottom-40 -left-40 w-[420px] h-[420px] rounded-full bg-pjsk-cyan opacity-40 blur-3xl pointer-events-none" />
+
+      <div className="relative max-w-[1400px] mx-auto px-6 md:px-10 pt-12">
+        {/* 顶部标签条 */}
+        <div className="flex flex-wrap items-center gap-3 mb-10">
+          <span className="inline-flex items-center gap-2 px-3 py-1 bg-white ink-border rounded-full text-sm font-mono">
+            <span className="w-2 h-2 bg-pjsk-coral rounded-full pulse-dot" />
+            status: online
+          </span>
+          <span className="inline-flex items-center gap-2 px-3 py-1 bg-pjsk-yellow ink-border rounded-full text-sm font-mono">
+            <IconNote /> now spinning: 小豆沢こはね × 光線歌
+          </span>
+          <span className="inline-flex items-center gap-2 px-3 py-1 bg-pjsk-cyan ink-border rounded-full text-sm font-mono">
+            v2.0.26 / 成都 · Chengdu
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+          {/* 左侧大标题 */}
+          <div className="lg:col-span-8">
+            <motion.div
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.7 }}
+              className="font-display text-ink"
+            >
+              <div className="text-6xl md:text-8xl leading-[0.85] tracking-tight">
+                HELLO, I'M
+              </div>
+              <div className="text-[20vw] md:text-[13rem] leading-[0.82] tracking-tight relative">
+                <span className="text-stroke">東</span>
+                <span className="relative inline-block">
+                  <span className="relative z-10">雪</span>
+                  <span className="absolute inset-0 bg-pjsk-pink -skew-x-6 -z-0 translate-x-1 translate-y-1" />
+                </span>
+                <span className="text-stroke">。</span>
+              </div>
+              <div className="text-4xl md:text-6xl mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="inline-block px-3 bg-ink text-cream font-jp">またの名を</span>
+                <motion.span
+                  key={idx}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-pjsk-pink font-jp"
+                >
+                  {ROTATING[idx]}
+                </motion.span>
+              </div>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="mt-8 max-w-2xl text-lg md:text-xl font-jp text-ink-soft leading-relaxed"
+            >
+              独立全栈开发者 / <span className="text-pjsk-pink font-bold">PJSK 社区工具作者</span> /
+              效率主义折腾党。
+              <br className="hidden md:block" />
+              在四川大学读机械工程，偶尔写 Go，偶尔造轮子，大部分时间在摸 Sekai。
+            </motion.p>
+
+            {/* 动作按钮 */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="mt-8 flex flex-wrap gap-4"
+            >
+              <a
+                href="#projects"
+                className="group inline-flex items-center gap-3 px-6 py-4 bg-ink text-cream ink-border-3 hard-shadow-pink hover:-translate-y-1 hover:translate-x-1 transition-transform font-display tracking-widest text-xl"
+              >
+                SEE MY WORK
+                <span className="transition-transform group-hover:translate-x-1"><IconArrowRight /></span>
+              </a>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-3 px-6 py-4 bg-pjsk-yellow ink-border-3 hard-shadow hover:-translate-y-1 hover:translate-x-1 transition-transform font-display tracking-widest text-xl"
+              >
+                SAY HI <IconNote />
+              </a>
+            </motion.div>
+          </div>
+
+          {/* 右侧头像卡 */}
+          <motion.div
+            initial={{ rotate: -10, scale: 0.8, opacity: 0 }}
+            animate={{ rotate: 4, scale: 1, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.7, type: "spring" }}
+            className="lg:col-span-4 flex justify-center lg:justify-end"
+          >
+            <div className="relative">
+              <div className="absolute -top-6 -left-6 px-3 py-1 bg-pjsk-yellow ink-border font-display text-ink rotate-[-8deg] z-10">
+                ID CARD <IconStar />
+              </div>
+              <div className="absolute -bottom-4 -right-4 px-3 py-1 bg-pjsk-pink ink-border text-white font-mono text-xs rotate-[6deg] z-10">
+                since 2024
+              </div>
+              <div className="w-64 h-80 md:w-72 md:h-96 bg-white ink-border-3 hard-shadow-cyan p-4 relative overflow-hidden">
+                <div className="w-full h-full relative ink-border">
+                  <img
+                    src="https://avatars.githubusercontent.com/u/262236806?s=400&v=4"
+                    alt="avatar"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 scanlines pointer-events-none" />
+                  <div className="absolute top-2 left-2 bg-ink text-cream px-2 py-0.5 font-mono text-xs">
+                    NO. 001
+                  </div>
+                  <div className="absolute bottom-0 inset-x-0 bg-pjsk-pink text-white py-1.5 font-display tracking-widest text-sm text-center border-t-3 border-ink">
+                    東雪
+                  </div>
+                </div>
+                {/* 贴纸 */}
+                <div className="absolute -right-3 top-10 bg-pjsk-cyan ink-border px-2 py-1 font-mono text-[10px] rotate-12">
+                  <IconHeartLine /> OTAKU
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* 底部统计条 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="md:col-span-7 space-y-8"
+          transition={{ delay: 0.9 }}
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
         >
-          <div className="flex items-center gap-4">
-            <div className="stamp w-10 h-10 text-xl">東</div>
-            <div className="flex flex-col">
-              <span className="font-serif-en text-xs tracking-[0.3em] text-shu uppercase">
-                Full-stack Developer · Sekai Builder
-              </span>
-              <span className="font-serif-cn text-sm text-ink-faint">独立开发者 · 社区工具作者</span>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="font-brush text-6xl md:text-8xl text-ink leading-none mb-4">
-              浅忆清梦
-            </h2>
-            <div className="flex items-baseline gap-6 flex-wrap">
-              <h3 className="font-serif-en text-3xl md:text-4xl font-light italic text-ink-soft">
-                Azuma Yuki
-              </h3>
-              <span className="font-mono text-xs text-ink-faint">// a.k.a. 東雪</span>
-            </div>
-          </div>
-
-          <p className="font-serif-cn text-lg md:text-xl text-ink-soft leading-relaxed max-w-2xl">
-            在代码与二次元之间穿行，用
-            <span className="text-shu font-medium">效率主义</span>
-            编织自己的 Sekai。
-            <br />
-            <span className="text-ink-faint">
-              一名来自四川大学的机械工程系学生，却在深夜里为 PJSK 的旋律写下千万行代码。
-            </span>
-          </p>
-
-          <div className="flex flex-wrap gap-3 pt-4">
-            {[
-              { text: "Go 后端", color: "#00ADD8" },
-              { text: "Next.js", color: "#1a1a2e" },
-              { text: "Vue 3", color: "#42b883" },
-              { text: "React + Satori", color: "#61DAFB" },
-              { text: "ZeroBot", color: "#c8385a" },
-              { text: "Docker", color: "#2496ED" },
-            ].map((t) => (
-              <span
-                key={t.text}
-                className="px-3 py-1.5 font-mono text-xs tracking-wider"
-                style={{
-                  background: "rgba(245, 241, 232, 0.6)",
-                  border: `1px solid ${t.color}40`,
-                  color: t.color,
-                }}
-              >
-                <span
-                  className="inline-block w-1.5 h-1.5 rounded-full mr-2"
-                  style={{ background: t.color }}
-                />
-                {t.text}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-6 pt-6">
-            <a
-              href="#works"
-              className="group inline-flex items-center gap-3 bg-ink text-washi px-6 py-3 font-serif-cn text-sm tracking-wider hover:bg-shu transition-colors"
+          {[
+            { n: "04+", l: "SIDE PROJECTS", c: "bg-white" },
+            { n: "90%", l: "SEKAI.BEST CORE", c: "bg-pjsk-pink text-white" },
+            { n: "GO", l: "FAVORITE LANG", c: "bg-pjsk-yellow", icon: <IconHeart /> },
+            { n: "∞", l: "CUPS OF MILK TEA", c: "bg-pjsk-cyan" },
+          ].map((s, i) => (
+            <div
+              key={i}
+              className={`${s.c} ink-border-3 px-5 py-4 hard-shadow relative overflow-hidden`}
             >
-              <span>查看作品</span>
-              <span className="font-serif-en text-xs opacity-60">VIEW WORKS</span>
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </a>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-3 border border-ink/30 text-ink px-6 py-3 font-serif-cn text-sm tracking-wider hover:border-shu hover:text-shu transition-colors"
-            >
-              <span>联系</span>
-              <span className="font-serif-en text-xs opacity-60">CONTACT</span>
-            </a>
-          </div>
-        </motion.div>
-
-        {/* Right: info panel */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.6 }}
-          className="md:col-span-3 space-y-6"
-        >
-          {/* Time panel */}
-          <div className="border border-ink/15 bg-washi/60 backdrop-blur p-5 space-y-3">
-            <div className="flex justify-between items-start">
-              <span className="font-serif-en text-[10px] tracking-[0.3em] text-ink-faint uppercase">
-                Current Time
-              </span>
-              <span className="stamp w-6 h-6 text-[10px]">時</span>
+              <div className="font-display text-5xl md:text-6xl leading-none flex items-center gap-2">{s.icon ? <>GO {s.icon}</> : s.n}</div>
+              <div className="font-mono text-xs mt-2 tracking-wider">{s.l}</div>
+              <div className="absolute top-2 right-2 font-display text-2xl opacity-30">0{i + 1}</div>
             </div>
-            <div className="font-mono text-3xl text-ink tabular-nums">{time}</div>
-            <div className="font-serif-cn text-xs text-ink-faint">CST · 中国标准时间</div>
-          </div>
-
-          {/* Location */}
-          <div className="border border-ink/15 bg-washi/60 backdrop-blur p-5 space-y-3">
-            <div className="flex justify-between items-start">
-              <span className="font-serif-en text-[10px] tracking-[0.3em] text-ink-faint uppercase">
-                Location
-              </span>
-              <span className="stamp w-6 h-6 text-[10px]">地</span>
-            </div>
-            <div className="font-brush text-2xl text-ink">成都</div>
-            <div className="font-serif-en text-xs text-ink-faint">Chengdu · Sichuan</div>
-            <div className="pt-2 border-t border-ink/10 font-serif-cn text-xs text-ink-muted leading-relaxed">
-              四川大学 · 机械工程系
-              <br />
-              <span className="font-serif-en italic">SCU · Mechanical Eng.</span>
-            </div>
-          </div>
-
-          {/* Status */}
-          <div className="border border-shu/30 bg-shu/5 p-5 space-y-3">
-            <div className="flex justify-between items-start">
-              <span className="font-serif-en text-[10px] tracking-[0.3em] text-shu uppercase">
-                Status
-              </span>
-              <span className="w-2 h-2 rounded-full bg-shu animate-pulse" />
-            </div>
-            <div className="font-serif-cn text-sm text-ink-soft leading-relaxed">
-              正在维护 <span className="text-shu">Moesekai</span> 与 <span className="text-shu">Moebot NEXT</span>
-            </div>
-            <div className="font-mono text-[10px] text-ink-faint">core service &lt; 50MB RSS</div>
-          </div>
+          ))}
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-ink-faint z-20"
-      >
-        <span className="font-serif-en text-[10px] tracking-[0.4em]">SCROLL</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-[1px] h-8 bg-ink-faint"
-        />
-      </motion.div>
     </section>
   );
 }
