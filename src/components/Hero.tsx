@@ -138,7 +138,7 @@ export function Hero() {
               <div className="w-64 h-80 md:w-72 md:h-96 bg-white ink-border-3 hard-shadow-cyan p-4 relative overflow-hidden">
                 <div className="w-full h-full relative ink-border">
                   <img
-                    src="https://avatars.githubusercontent.com/u/262236806?s=400&v=4"
+                    src="/assets/avatar.png"
                     alt="avatar"
                     className="w-full h-full object-cover"
                   />

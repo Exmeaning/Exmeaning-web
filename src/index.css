@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "MaokenAssortedSans-Lite";
+  src: url("/assets/MaokenAssortedSans-Lite.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-cream: #FFF4E6;
   --color-cream-dark: #FFE8CC;
@@ -13,8 +21,8 @@
   --color-pjsk-lime: #B8F04A;
 
   --font-display: "Bebas Neue", "Zen Maru Gothic", sans-serif;
-  --font-jp: "Zen Maru Gothic", "LXGW WenKai", sans-serif;
-  --font-body: "Space Grotesk", "LXGW WenKai", sans-serif;
+  --font-jp: "MaokenAssortedSans-Lite", "Zen Maru Gothic", sans-serif;
+  --font-body: "Space Grotesk", "MaokenAssortedSans-Lite", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
